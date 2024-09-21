@@ -34,8 +34,8 @@ fn build_scores_table(results: &str) -> HashMap<&str, TeamScores> {
 
         // 球队名(不要重复插入覆盖) + 得分统计
         scores
-            .entry(team_1_name.clone())
-            .and_modify(|team| {
+            .entry(team_1_name)
+            .and_modify(|team: &mut TeamScores| {
                 team.goals_scored += team_1_score;
                 team.goals_conceded += team_2_score;
             })
@@ -46,8 +46,8 @@ fn build_scores_table(results: &str) -> HashMap<&str, TeamScores> {
             });
 
         scores
-            .entry(team_2_name.clone())
-            .and_modify(|team| {
+            .entry(team_2_name)
+            .and_modify(|team: &mut TeamScores| {
                 team.goals_scored += team_2_score;
                 team.goals_conceded += team_1_score;
             })
@@ -68,14 +68,12 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    const RESULTS: &str = "
-        England,France,4,2
-        France,Italy,3,1
-        Poland,Spain,2,0
-        Germany,England,2,1
-        England,Spain,1,0
-    ";
+    
+    const RESULTS: &str = "England,France,4,2
+France,Italy,3,1
+Poland,Spain,2,0
+Germany,England,2,1
+England,Spain,1,0";
 
     #[test]
     fn build_scores() {

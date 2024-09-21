@@ -21,7 +21,16 @@ fn total_cost(item_quantity: &str) -> Result<i32, ParseIntError> {
     let cost_per_item = 5;
 
     // TODO: Handle the error case as described above.
-    let qty = item_quantity.parse::<i32>();
+    // parse 类型转换为i32, 转换失败会抛出 ParseIntError
+    let qty: Result<i32, ParseIntError> = item_quantity.parse::<i32>();
+
+    // // Result不能直接计算, 需要取出值来操作
+    // let qty = match qty {
+    //     Ok(q) => q, // 如果成功原样返回
+    //     Err(e) => return Err(e), // 如果错误就提前结束抛出错误了~~
+    // };
+
+    let qty: i32 = qty?; // 简写语法糖: 问号表达式
 
     Ok(qty * cost_per_item + processing_fee)
 }
