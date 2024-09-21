@@ -1,13 +1,20 @@
 fn trim_me(input: &str) -> &str {
     // TODO: Remove whitespace from both ends of a string.
+    input.trim()
+    // 理解为什么方法在&str上(只读的视图), trim 修改起始指针与长度
+    // 
 }
 
 fn compose_me(input: &str) -> String {
     // TODO: Add " world!" to the string! There are multiple ways to do this.
+    format!("{input} world!")
+    // input.to_string().push_str(" world!");
 }
 
 fn replace_me(input: &str) -> String {
     // TODO: Replace "cars" in the string with "balloons".
+    // 理解为什么replace返回的是String, 而不是&str
+    input.replace("cars", "balloons")
 }
 
 fn main() {
