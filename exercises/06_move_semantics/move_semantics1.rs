@@ -1,6 +1,6 @@
 // TODO: Fix the compiler error in this function.
 fn fill_vec(vec: Vec<i32>) -> Vec<i32> {
-    let vec = vec;
+    let mut vec = vec; // 重新声明了一次, 但是并没有深拷贝! 依然是同一片内存地址s
 
     vec.push(88);
 

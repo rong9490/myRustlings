@@ -9,9 +9,11 @@ mod tests {
     #[test]
     fn move_semantics4() {
         let mut x = Vec::new();
-        let y = &mut x;
-        let z = &mut x;
+        let y = &mut x; // 可变引用y
         y.push(42);
+        // y.free(); 相当于隐式调用了
+
+        let z = &mut x; // 可变引用z
         z.push(13);
         assert_eq!(x, [42, 13]);
     }
