@@ -10,6 +10,8 @@
 
 use std::collections::HashMap;
 
+// HACK 作为Hash的key, 需要实现 Hash / PartialEq / Eq
+// 解决哈希冲突
 #[derive(Hash, PartialEq, Eq, Debug)]
 enum Fruit {
     Apple,
@@ -28,10 +30,16 @@ fn fruit_basket(basket: &mut HashMap<Fruit, u32>) {
         Fruit::Pineapple,
     ];
 
+    // 遍历
     for fruit in fruit_kinds {
         // TODO: Insert new fruits if they are not already present in the
         // basket. Note that you are not allowed to put any type of fruit that's
         // already present!
+
+        // HACK 如果没有才插入: 等同于: contains_key + insert
+        // entry查询出来的值, 返回结果, 链式api, 如果不存在才插入insert
+        // lazy的闭包函数!
+        basket.entry(fruit).or_insert_with(|| 1);
     }
 }
 
@@ -60,7 +68,7 @@ mod tests {
 
     #[test]
     fn at_least_five_types_of_fruits() {
-        let mut basket = get_fruit_basket();
+        let mut basket: HashMap<Fruit, u32> = get_fruit_basket();
         fruit_basket(&mut basket);
         let count_fruit_kinds = basket.len();
         assert!(count_fruit_kinds >= 5);

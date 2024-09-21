@@ -11,8 +11,8 @@ use std::collections::HashMap;
 // A structure to store the goal details of a team.
 #[derive(Default)]
 struct TeamScores {
-    goals_scored: u8,
-    goals_conceded: u8,
+    goals_scored: u8,   // 得球数
+    goals_conceded: u8, // 失球数
 }
 
 fn build_scores_table(results: &str) -> HashMap<&str, TeamScores> {
@@ -24,13 +24,38 @@ fn build_scores_table(results: &str) -> HashMap<&str, TeamScores> {
         // NOTE: We use `unwrap` because we didn't deal with error handling yet.
         let team_1_name = split_iterator.next().unwrap();
         let team_2_name = split_iterator.next().unwrap();
-        let team_1_score: u8 = split_iterator.next().unwrap().parse().unwrap();
-        let team_2_score: u8 = split_iterator.next().unwrap().parse().unwrap();
+        let team_1_score: u8 = split_iterator.next().unwrap().parse().unwrap(); // 1的得球就是2的失球
+        let team_2_score: u8 = split_iterator.next().unwrap().parse().unwrap(); // 2的得球就是1的失球
 
         // TODO: Populate the scores table with the extracted details.
         // Keep in mind that goals scored by team 1 will be the number of goals
         // conceded by team 2. Similarly, goals scored by team 2 will be the
         // number of goals conceded by team 1.
+
+        // 球队名(不要重复插入覆盖) + 得分统计
+        scores
+            .entry(team_1_name.clone())
+            .and_modify(|team| {
+                team.goals_scored += team_1_score;
+                team.goals_conceded += team_2_score;
+            })
+            .or_insert_with(|| TeamScores {
+                // 如果不存在初始化该结构体
+                goals_scored: team_1_score,
+                goals_conceded: team_2_score,
+            });
+
+        scores
+            .entry(team_2_name.clone())
+            .and_modify(|team| {
+                team.goals_scored += team_2_score;
+                team.goals_conceded += team_1_score;
+            })
+            .or_insert_with(|| TeamScores {
+                // 如果不存在初始化该结构体
+                goals_scored: team_2_score,
+                goals_conceded: team_1_score,
+            });
     }
 
     scores
@@ -44,14 +69,17 @@ fn main() {
 mod tests {
     use super::*;
 
-    const RESULTS: &str = "England,France,4,2
-France,Italy,3,1
-Poland,Spain,2,0
-Germany,England,2,1
-England,Spain,1,0";
+    const RESULTS: &str = "
+        England,France,4,2
+        France,Italy,3,1
+        Poland,Spain,2,0
+        Germany,England,2,1
+        England,Spain,1,0
+    ";
 
     #[test]
     fn build_scores() {
+        // 哈希的值是个结构体struct TeamScores
         let scores = build_scores_table(RESULTS);
 
         assert!(["England", "France", "Germany", "Italy", "Poland", "Spain"]
