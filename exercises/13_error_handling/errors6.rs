@@ -14,18 +14,23 @@ enum CreationError {
 
 // A custom error type that we will be using in `PositiveNonzeroInteger::parse`.
 #[derive(PartialEq, Debug)]
+// HACK 统一的, 二级的错误枚举, 涵盖所有的错误情况; 方便上层根据情况具体处理!!
 enum ParsePosNonzeroError {
     Creation(CreationError),
     ParseInt(ParseIntError),
 }
 
 impl ParsePosNonzeroError {
+    // 两个错误转换的情况, 统一成我们自定义的错误
     fn from_creation(err: CreationError) -> Self {
         Self::Creation(err)
     }
 
     // TODO: Add another error conversion function here.
-    // fn from_parse_int(???) -> Self { ??? }
+    // 将ParseIntError包装一层
+    fn from_parse_int(err: ParseIntError) -> Self {
+        ParsePosNonzeroError::ParseInt(err)
+    }
 }
 
 #[derive(PartialEq, Debug)]
@@ -43,7 +48,12 @@ impl PositiveNonzeroInteger {
     fn parse(s: &str) -> Result<Self, ParsePosNonzeroError> {
         // TODO: change this to return an appropriate error instead of panicking
         // when `parse()` returns an error.
-        let x: i64 = s.parse().unwrap();
+        let x: i64 = s
+            .parse()
+            .map_err(|e: ParseIntError| ParsePosNonzeroError::from_parse_int(e))?;
+
+        // impl From for ParsePosNonzeroError: 更常见的做法, 自动做类型转换 into + ?
+
         Self::new(x).map_err(ParsePosNonzeroError::from_creation)
     }
 }
