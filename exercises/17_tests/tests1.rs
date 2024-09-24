@@ -9,6 +9,7 @@ fn main() {
     // You can optionally experiment here.
 }
 
+// cargo test 才会编译
 #[cfg(test)]
 mod tests {
     // TODO: Import `is_even`. You can use a wildcard to import everything in
@@ -17,7 +18,7 @@ mod tests {
     #[test]
     fn you_can_assert() {
         // TODO: Test the function `is_even` with some values.
-        assert!();
-        assert!();
+        assert!(true);
+        assert!(1 == 1);
     }
 }

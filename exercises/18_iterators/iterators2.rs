@@ -4,10 +4,10 @@
 // TODO: Complete the `capitalize_first` function.
 // "hello" -> "Hello"
 fn capitalize_first(input: &str) -> String {
-    let mut chars = input.chars();
+    let mut chars = input.chars(); // 字符串产生的迭代器, 消费完第一个字符, 然后将剩下的重新组装回去as_str
     match chars.next() {
         None => String::new(),
-        Some(first) => todo!(),
+        Some(first) => first.to_uppercase().to_string() + chars.as_str(),
     }
 }
 
@@ -15,14 +15,18 @@ fn capitalize_first(input: &str) -> String {
 // Return a vector of strings.
 // ["hello", "world"] -> ["Hello", "World"]
 fn capitalize_words_vector(words: &[&str]) -> Vec<String> {
-    // ???
+    words.iter().map(|&word| {
+        capitalize_first(word)
+    }).collect()
 }
 
 // TODO: Apply the `capitalize_first` function again to a slice of string
 // slices. Return a single string.
 // ["hello", " ", "world"] -> "Hello World"
 fn capitalize_words_string(words: &[&str]) -> String {
-    // ???
+    words.iter().map(|&word| {
+        capitalize_first(word)
+    }).collect::<String>()
 }
 
 fn main() {
