@@ -10,6 +10,27 @@ fn factorial(num: u64) -> u64 {
     // - additional variables
     // For an extra challenge, don't use:
     // - recursion
+
+    // 不要用return, 不要用循环这种命令式, 不要增加额外变量, 不要递归
+
+    // 递归做法
+    // fn do_factorial(acc: u64, num: u64) -> u64 {
+    //     match num {
+    //         0 | 1 => acc,
+    //         _ => do_factorial(acc * num, num - 1)
+    //     }
+    // }
+
+    // do_factorial(1, num)
+
+    // iteracor 的递归 fold
+    (0..=num).fold(1, |acc, num| {
+        match num {
+            0 | 1 => acc,
+            _ => acc * num,
+        }
+    })
+
 }
 
 fn main() {

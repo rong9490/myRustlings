@@ -1,13 +1,19 @@
 // In this exercise, you'll learn some of the unique advantages that iterators
 // can offer.
 
+use std::str::Chars;
+
 // TODO: Complete the `capitalize_first` function.
 // "hello" -> "Hello"
 fn capitalize_first(input: &str) -> String {
-    let mut chars = input.chars(); // 字符串产生的迭代器, 消费完第一个字符, 然后将剩下的重新组装回去as_str
-    match chars.next() {
-        None => String::new(),
-        Some(first) => first.to_uppercase().to_string() + chars.as_str(),
+    let mut chars: Chars<'_> = input.chars(); // 字符串产生的迭代器, 消费完第一个字符, 然后将剩下的重新组装回去as_str
+    let first_char: Option<char> = chars.next();
+    match first_char {
+        None => String::new(), // 如果首个字符都没有, 那么返回空字符串
+        Some(first) => {
+            let rest_chars: &str = chars.as_str();
+            first.to_uppercase().to_string() + rest_chars
+        },
     }
 }
 
@@ -15,9 +21,12 @@ fn capitalize_first(input: &str) -> String {
 // Return a vector of strings.
 // ["hello", "world"] -> ["Hello", "World"]
 fn capitalize_words_vector(words: &[&str]) -> Vec<String> {
+
+    // 迭代器遍历每格单词, 然后map适配器
+    // 最后collect重新组装回容器, 组装成什么类型, 通过turbofish操作
     words.iter().map(|&word| {
         capitalize_first(word)
-    }).collect()
+    }).collect::<Vec<String>>()
 }
 
 // TODO: Apply the `capitalize_first` function again to a slice of string
@@ -25,6 +34,7 @@ fn capitalize_words_vector(words: &[&str]) -> Vec<String> {
 // ["hello", " ", "world"] -> "Hello World"
 fn capitalize_words_string(words: &[&str]) -> String {
     words.iter().map(|&word| {
+        // TODO String, Vec<String>, 像魔法
         capitalize_first(word)
     }).collect::<String>()
 }

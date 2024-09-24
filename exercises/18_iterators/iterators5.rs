@@ -14,6 +14,7 @@ enum Progress {
 }
 
 fn count_for(map: &HashMap<String, Progress>, value: Progress) -> usize {
+    // HACK 命令式, for循环
     let mut count = 0;
     for val in map.values() {
         if *val == value {
@@ -28,6 +29,9 @@ fn count_for(map: &HashMap<String, Progress>, value: Progress) -> usize {
 fn count_iterator(map: &HashMap<String, Progress>, value: Progress) -> usize {
     // `map` is a hash map with `String` keys and `Progress` values.
     // map = { "variables1": Complete, "from_str": None, … }
+
+    // HACK 迭代器版本, 过滤 kv这个参数, 最后count方法计数!
+    map.iter().filter(|kv| kv.1 == &value).count()
 }
 
 fn count_collection_for(collection: &[HashMap<String, Progress>], value: Progress) -> usize {
@@ -48,6 +52,13 @@ fn count_collection_iterator(collection: &[HashMap<String, Progress>], value: Pr
     // `collection` is a slice of hash maps.
     // collection = [{ "variables1": Complete, "from_str": None, … },
     //               { "variables2": Complete, … }, … ]
+
+    // 多个哈希Map切片, 两重循环
+    // 哈希Map转成数字, 然后sum求和
+    collection
+        .iter()
+        .map(|hashmap| count_iterator(hashmap, value))
+        .sum()
 }
 
 fn main() {
