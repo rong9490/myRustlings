@@ -14,20 +14,29 @@ impl Queue {
     }
 }
 
+// HACK 这道题没看懂
+// mpsc 通讯: 共享 与 消息传递
+// mpsc 多个生产者, 一个消费者; 拿到队列的消息
+// Send , Sync; T is Sync: &T is send;
+
 fn send_tx(q: Queue, tx: mpsc::Sender<u32>) {
-    // TODO: We want to send `tx` to both threads. But currently, it is moved
-    // into the first thread. How could you solve this problem?
+    // 使用 clone() 克隆 tx 发送者,这样可以在两个线程中使用
+    // 理解为什么需要 clone ??
+    let tx1 = tx.clone();
+    
+
+    // move所有权进入
     thread::spawn(move || {
         for val in q.first_half {
-            println!("Sending {val:?}");
-            tx.send(val).unwrap();
+            println!("发送 {val:?}");
+            tx1.send(val).unwrap();
             thread::sleep(Duration::from_millis(250));
         }
     });
 
     thread::spawn(move || {
         for val in q.second_half {
-            println!("Sending {val:?}");
+            println!("发送 {val:?}");
             tx.send(val).unwrap();
             thread::sleep(Duration::from_millis(250));
         }
@@ -35,7 +44,7 @@ fn send_tx(q: Queue, tx: mpsc::Sender<u32>) {
 }
 
 fn main() {
-    // You can optionally experiment here.
+    // 你可以在这里进行可选的实验
 }
 
 #[cfg(test)]

@@ -3,6 +3,7 @@
 // lazily when mutation or ownership is required. The type is designed to work
 // with general borrowed data via the `Borrow` trait.
 
+// Clone on Write !! 引用或所有权, 之间转换
 use std::borrow::Cow;
 
 fn abs_all(input: &mut Cow<[i32]>) {

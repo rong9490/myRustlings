@@ -9,21 +9,22 @@
 // item in a cons list contains two elements: The value of the current item and
 // the next item. The last item is a value called `Nil`.
 
+// 链表结构
 // TODO: Use a `Box` in the enum definition to make the code compile.
 #[derive(PartialEq, Debug)]
-enum List {
-    Cons(i32, List),
+enum List { // 确认的是 栈内存的大小, 因为内存是紧密排列的!指针是一个挨着一个的;
+    Cons(i32, Box<List>), // 递归, 为什么需要用Box抱起来, 因为无法确认占用内存大小! Box使用的堆内存, 显式移到堆内存上
     Nil,
 }
 
 // TODO: Create an empty cons list.
 fn create_empty_list() -> List {
-    todo!()
+    List::Nil
 }
 
 // TODO: Create a non-empty cons list.
 fn create_non_empty_list() -> List {
-    todo!()
+    List::Cons(42, Box::new(List::Nil)) // 栈上指针指向堆内存
 }
 
 fn main() {

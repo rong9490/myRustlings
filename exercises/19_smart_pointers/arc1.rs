@@ -19,17 +19,21 @@
 #![forbid(unused_imports)]
 use std::{sync::Arc, thread};
 
+// 智能指针, 结构体, 引用信息, 视为普通变量, 
+
 fn main() {
     let numbers: Vec<_> = (0..100u32).collect();
 
+    // 解决方法: clone耗内存; 引用计数; 原子的, 可以多线程使用, 自动加减;
     // TODO: Define `shared_numbers` by using `Arc`.
-    // let shared_numbers = ???;
+    let shared_numbers = Arc::new(numbers);
 
     let mut join_handles = Vec::new();
 
     for offset in 0..8 {
         // TODO: Define `child_numbers` using `shared_numbers`.
-        // let child_numbers = ???;
+        // 这里 Arc::clone 什么作用
+        let child_numbers = Arc::clone(&shared_numbers);
 
         let handle = thread::spawn(move || {
             let sum: u32 = child_numbers.iter().filter(|&&n| n % 8 == offset).sum();

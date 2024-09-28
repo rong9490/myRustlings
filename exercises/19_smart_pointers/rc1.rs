@@ -8,10 +8,11 @@ use std::rc::Rc;
 #[derive(Debug)]
 struct Sun;
 
+
 #[allow(dead_code)]
 #[derive(Debug)]
 enum Planet {
-    Mercury(Rc<Sun>),
+    Mercury(Rc<Sun>), // 引用计数, 传进去的
     Venus(Rc<Sun>),
     Earth(Rc<Sun>),
     Mars(Rc<Sun>),
@@ -37,8 +38,8 @@ mod tests {
 
     #[test]
     fn rc1() {
-        let sun = Rc::new(Sun);
-        println!("reference count = {}", Rc::strong_count(&sun)); // 1 reference
+        let sun = Rc::new(Sun); // 创建太阳, 引用计数的智能指针
+        println!("reference count = {}", Rc::strong_count(&sun)); // 1 reference ? 为什么一开始引用就是1, 而不是0
 
         let mercury = Planet::Mercury(Rc::clone(&sun));
         println!("reference count = {}", Rc::strong_count(&sun)); // 2 references
@@ -60,23 +61,21 @@ mod tests {
         println!("reference count = {}", Rc::strong_count(&sun)); // 6 references
         jupiter.details();
 
-        // TODO
-        let saturn = Planet::Saturn(Rc::new(Sun));
+        let saturn = Planet::Saturn(Rc::clone(&sun));
         println!("reference count = {}", Rc::strong_count(&sun)); // 7 references
         saturn.details();
 
-        // TODO
-        let uranus = Planet::Uranus(Rc::new(Sun));
+        let uranus = Planet::Uranus(Rc::clone(&sun)); // 如果重新new的话引用计数无关的, 新开的
         println!("reference count = {}", Rc::strong_count(&sun)); // 8 references
         uranus.details();
 
-        // TODO
-        let neptune = Planet::Neptune(Rc::new(Sun));
+        let neptune = Planet::Neptune(Rc::clone(&sun));
         println!("reference count = {}", Rc::strong_count(&sun)); // 9 references
         neptune.details();
 
         assert_eq!(Rc::strong_count(&sun), 9);
 
+        /* 开始解引用了, 计数会自动减少! */
         drop(neptune);
         println!("reference count = {}", Rc::strong_count(&sun)); // 8 references
 
@@ -92,13 +91,13 @@ mod tests {
         drop(mars);
         println!("reference count = {}", Rc::strong_count(&sun)); // 4 references
 
-        // TODO
+        drop(earth);
         println!("reference count = {}", Rc::strong_count(&sun)); // 3 references
 
-        // TODO
+        drop(mercury);
         println!("reference count = {}", Rc::strong_count(&sun)); // 2 references
 
-        // TODO
+        drop(venus);
         println!("reference count = {}", Rc::strong_count(&sun)); // 1 reference
 
         assert_eq!(Rc::strong_count(&sun), 1);
