@@ -38,6 +38,7 @@ mod tests {
 
     #[test]
     fn rc1() {
+        // 对于每个行星不是分别new一个sun; 而是共享一个sun的内容, 所以用到引用计数
         let sun = Rc::new(Sun); // 创建太阳, 引用计数的智能指针
         println!("reference count = {}", Rc::strong_count(&sun)); // 1 reference ? 为什么一开始引用就是1, 而不是0
 
@@ -75,7 +76,7 @@ mod tests {
 
         assert_eq!(Rc::strong_count(&sun), 9);
 
-        /* 开始解引用了, 计数会自动减少! */
+        /* 当引用者释放了, 计数会自动减少! */
         drop(neptune);
         println!("reference count = {}", Rc::strong_count(&sun)); // 8 references
 

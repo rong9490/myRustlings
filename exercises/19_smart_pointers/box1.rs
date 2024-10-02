@@ -11,6 +11,7 @@
 
 // 链表结构
 // TODO: Use a `Box` in the enum definition to make the code compile.
+// 栈内存一定需要确定占用大小, 递归无法确定, 所以需要用Box放到堆内存中;
 #[derive(PartialEq, Debug)]
 enum List { // 确认的是 栈内存的大小, 因为内存是紧密排列的!指针是一个挨着一个的;
     Cons(i32, Box<List>), // 递归, 为什么需要用Box抱起来, 因为无法确认占用内存大小! Box使用的堆内存, 显式移到堆内存上
