@@ -1,5 +1,8 @@
 use std::{sync::mpsc, thread, time::Duration};
+use std::sync::mpsc::Sender;
+// sync::mpsc = multiple producer, single consumer 多生产者, 单消费者
 
+#[derive(Debug)]
 struct Queue {
     first_half: Vec<u32>,
     second_half: Vec<u32>,
@@ -19,21 +22,23 @@ impl Queue {
 // mpsc 多个生产者, 一个消费者; 拿到队列的消息
 // Send , Sync; T is Sync: &T is send;
 
+// mpsc: Sender<u32> 这里参数传入是有所有权的, 但是有两次需要使用, 所以需要clone
+// 是否支持clone: impl<T> Clone for Sender<T> { inner: self.inner.clone() }
 fn send_tx(q: Queue, tx: mpsc::Sender<u32>) {
     // 使用 clone() 克隆 tx 发送者,这样可以在两个线程中使用
-    // 理解为什么需要 clone ??
-    let tx1 = tx.clone();
-    
+    // 因为spawn+move, 变量已经转移所有权了!
+    let tx_cloned = tx.clone();
 
-    // move所有权进入
+    // 线程1: 遍历first_half, 拿到第一个消息发送者, tx_cloned.send(val) 发送数字;
     thread::spawn(move || {
         for val in q.first_half {
             println!("发送 {val:?}");
-            tx1.send(val).unwrap();
+            tx_cloned.send(val).unwrap();
             thread::sleep(Duration::from_millis(250));
         }
     });
 
+    // 线程2: 遍历second_half, 拿到第二个消息发送者, tx2.send(val) 发送数字;
     thread::spawn(move || {
         for val in q.second_half {
             println!("发送 {val:?}");
@@ -44,7 +49,12 @@ fn send_tx(q: Queue, tx: mpsc::Sender<u32>) {
 }
 
 fn main() {
-    // 你可以在这里进行可选的实验
+    let queue = Queue::new(); // Struct实例化
+    let (tx, rx) = mpsc::channel::<i32>(); // 实例化通讯频道
+    let queue_first_length = queue.first_half.len();
+    let queue_second_length = queue.second_half.len();
+
+    println!("{:?}", queue);
 }
 
 #[cfg(test)]
@@ -53,9 +63,11 @@ mod tests {
 
     #[test]
     fn threads3() {
-        let (tx, rx) = mpsc::channel();
-        let queue = Queue::new();
-
+        // tx为发送者, rx为接受者
+        let (tx, rx) = mpsc::channel::<u32>(); // 实例化u32的消息通道
+        let queue = Queue::new(); // 结构体实例化
+    
+        // 核心: 
         send_tx(queue, tx);
 
         let mut received = Vec::with_capacity(10);

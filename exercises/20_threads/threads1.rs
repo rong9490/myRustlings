@@ -3,7 +3,7 @@
 // wait until all the spawned threads have finished and should collect their
 // return values into a vector.
 
-// Thread 现成实例, 与其他语言没有太大区别;
+// Thread 现成封装好的实例, 与其他语言没有太大区别;
 
 use std::{
     thread,
@@ -18,10 +18,10 @@ fn main() {
     // spawn 产生返回用于操作的句柄, 实例
     for i in 0..10 {
         let handle = thread::spawn(move || {
-            let start = Instant::now();
-            thread::sleep(Duration::from_millis(250));
-            println!("Thread {i} done");
-            start.elapsed().as_millis()
+            let start = Instant::now(); // 开始时刻
+            thread::sleep(Duration::from_millis(250)); // 休眠250ms
+            println!("Thread {i} done"); // 打印线程结束
+            start.elapsed().as_millis() // 返回花费的毫秒数
         });
         handles.push(handle);
     }
@@ -32,7 +32,8 @@ fn main() {
         // Use the `JoinHandle` struct which is returned by `thread::spawn`.
 
         // thread.join() 方法, 作用是, 执行时长毫秒
-        // 返回的是一个Result结果, 所以需要使用match处理!
+        // 收集Result 返回的是一个Result结果, 所以需要使用match处理!
+        // join 返回耗时情况, map
         let _ = handle.join().map(|mills| results.push(mills));
     }
 

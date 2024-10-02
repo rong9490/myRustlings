@@ -18,6 +18,8 @@ fn main() {
     // TODO: `Arc` isn't enough if you want a **mutable** shared state.
 
     // 跨线程间, 共享数据变量 原子"共享上下文"
+    // 核心是理解, 原子锁 与 线程共享状态规则
+    // Arc::new + Mutex::new
     let status: Arc<Mutex<JobStatus>> = Arc::new(Mutex::new(JobStatus { jobs_done: 0 }));
 
     let mut handles = Vec::new();
@@ -30,7 +32,7 @@ fn main() {
             thread::sleep(Duration::from_millis(500)); // 线程休眠 --> 线程并发操作共享变量, 会存在抢占与锁的问题
 
             // TODO: You must take an action before you update a shared value.
-            // 最简单的做法是, 加上一把锁, 每次都串行去做!
+            // 最简单的做法是, 加上一把锁, 每个操作都串行去做!
             status_shared.lock().unwrap().jobs_done += 1;
         });
         handles.push(handle);
