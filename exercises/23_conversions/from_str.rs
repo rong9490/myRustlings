@@ -38,10 +38,30 @@ enum ParsePersonError {
 // 4. If the name is empty, return the error `ParsePersonError::NoName`.
 // 5. Parse the second element from the split operation into a `u8` as the age.
 // 6. If parsing the age fails, return the error `ParsePersonError::ParseInt`.
+
+// FromStr 可能解析出错, 所以用Result<Self, Self::Err>
+//
+
 impl FromStr for Person {
     type Err = ParsePersonError;
 
-    fn from_str(s: &str) -> Result<Self, Self::Err> {}
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        if s.is_empty() {
+            return Err(Self::Err::BadLen);
+            // return Err(ParsePersonError::BadLen);
+        }
+
+        let splitted: Vec<&str>= s.split(",").collect::<Vec<&str>>();
+
+        match &splitted[..] {
+            &[name, _] if name.is_empty() => return Err(Self::Err::NoName),
+            &[name, age_str] => match age_str.parse::<usize>() {
+                Ok(age) => Ok(Person { name: name.to_string(), age: age as u8 }),
+                Err(e) => return Err(Self::Err::ParseInt(e))
+            },
+            _ => return Err(Self::Err::BadLen),
+        }
+    }
 }
 
 fn main() {
@@ -72,27 +92,27 @@ mod tests {
     fn missing_age() {
         assert!(matches!("John,".parse::<Person>(), Err(ParseInt(_))));
     }
-
+    
     #[test]
     fn invalid_age() {
         assert!(matches!("John,twenty".parse::<Person>(), Err(ParseInt(_))));
     }
-
+    
     #[test]
     fn missing_comma_and_age() {
         assert_eq!("John".parse::<Person>(), Err(BadLen));
     }
-
+    
     #[test]
     fn missing_name() {
         assert_eq!(",1".parse::<Person>(), Err(NoName));
     }
-
+    
     #[test]
     fn missing_name_and_age() {
         assert!(matches!(",".parse::<Person>(), Err(NoName | ParseInt(_))));
     }
-
+    
     #[test]
     fn missing_name_and_invalid_age() {
         assert!(matches!(
@@ -100,12 +120,12 @@ mod tests {
             Err(NoName | ParseInt(_)),
         ));
     }
-
+    
     #[test]
     fn trailing_comma() {
         assert_eq!("John,32,".parse::<Person>(), Err(BadLen));
     }
-
+    
     #[test]
     fn trailing_comma_and_some_string() {
         assert_eq!("John,32,man".parse::<Person>(), Err(BadLen));
