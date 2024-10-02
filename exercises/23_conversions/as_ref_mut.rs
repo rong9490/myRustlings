@@ -2,6 +2,8 @@
 // about them at https://doc.rust-lang.org/std/convert/trait.AsRef.html and
 // https://doc.rust-lang.org/std/convert/trait.AsMut.html, respectively.
 
+mod try_from_into2;
+
 // Obtain the number of bytes (not characters) in the given argument.
 // TODO: Add the `AsRef` trait appropriately as a trait bound.
 fn byte_counter<T>(arg: T) -> usize {
