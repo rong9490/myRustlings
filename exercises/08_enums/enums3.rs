@@ -1,10 +1,10 @@
+// 点的 结构体
 struct Point {
     x: u64,
     y: u64,
 }
 
 enum Message {
-    // TODO: Implement the message variant types based on their usage below.
     Resize { width: u64, height: u64 },
     Move(Point),
     Echo(String),
@@ -22,6 +22,7 @@ struct State {
     quit: bool,
 }
 
+// State上附加的方法
 impl State {
     fn resize(&mut self, width: u64, height: u64) {
         self.width = width;
@@ -45,18 +46,17 @@ impl State {
     }
 
     // 进程, 行为, 动作执行
-    fn process(&mut self, message: Message) {
-        // TODO: Create a match expression to process the different message
+    fn process(&mut self, message: Message) -> () {
         // variants using the methods defined above.
 
-        // 模式匹配分支流程
+        // 模式匹配 match, 列举枚举的所有可能
         match message {
             Message::Resize { width, height } => self.resize(width, height),
             Message::Move(point) => self.move_position(point),
             Message::Echo(str) => self.echo(str),
             Message::ChangeColor(r, g, b) => self.change_color(r, g, b),
             Message::Quit => self.quit(),
-        }
+        };
     }
 }
 
@@ -70,6 +70,7 @@ mod tests {
 
     #[test]
     fn test_match_message_call() {
+        // 实例化State
         let mut state = State {
             width: 0,
             height: 0,
@@ -79,6 +80,7 @@ mod tests {
             quit: false,
         };
 
+        // 调用process方法
         state.process(Message::Resize {
             width: 10,
             height: 30,

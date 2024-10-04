@@ -1,6 +1,5 @@
 #[derive(Debug)]
 enum Message {
-    // TODO: Define a few types of messages as used below.
     Resize,
     Move,
     Echo,
@@ -9,6 +8,7 @@ enum Message {
 }
 
 fn main() {
+    // 枚举需要用双冒号调用字段
     println!("{:?}", Message::Resize);
     println!("{:?}", Message::Move);
     println!("{:?}", Message::Echo);

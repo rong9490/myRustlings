@@ -1,3 +1,4 @@
+// 订单信息结构体
 #[derive(Debug)]
 struct Order {
     name: String,
@@ -9,6 +10,7 @@ struct Order {
     count: u32,
 }
 
+// 创建订单的模板工厂函数(简化, 默认值)
 fn create_order_template() -> Order {
     Order {
         name: String::from("Bob"),
@@ -33,7 +35,7 @@ mod tests {
     fn your_order() {
         let order_template: Order = create_order_template();
 
-        // TODO: Create your own order using the update syntax and template above!
+        // 技巧: 复用原有的部分字段, 覆盖新的
         let your_order: Order = Order {
             name: "Hacker in Rust".to_string(),
             count: 1,

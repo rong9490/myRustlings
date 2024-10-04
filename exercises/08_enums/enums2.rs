@@ -6,9 +6,9 @@ struct Point {
     y: u64,
 }
 
+// 枚举的值可以有非常多样, 不同类型, 且可以带'状态'
 #[derive(Debug)]
 enum Message {
-    // TODO: Define the different variants used below.
     Resize { width: u8, height: u8 },
     Move(Point),
     Echo(String),
@@ -23,7 +23,7 @@ impl Message {
 }
 
 fn main() {
-    let messages = [
+    let messages: [Message; 5] = [
         Message::Resize {
             width: 10,
             height: 30,
