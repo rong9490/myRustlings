@@ -1,5 +1,7 @@
 fn animal_habitat(animal: &str) -> &str {
     // TODO: Fix the compiler error in the statement below.
+    
+    // if表达式的返回值, 用一个变量绑定
     let identifier: i32 = if animal == "crab" {
         1
     } else if animal == "gopher" {
@@ -11,6 +13,7 @@ fn animal_habitat(animal: &str) -> &str {
     };
 
     // Don't change the expression below!
+    // 这个表达式的值直接返回'return'
     if identifier == 1 {
         "Beach"
     } else if identifier == 2 {

@@ -1,4 +1,5 @@
 // TODO: Fix the compiler error in the function without adding any new line.
+// 外面的不是mut, 但是在函数参数上可以额外添加mut, 然后再修改变量
 fn fill_vec(mut vec: Vec<i32>) -> Vec<i32> {
     vec.push(88);
 

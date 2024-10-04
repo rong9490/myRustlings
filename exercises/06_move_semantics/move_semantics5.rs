@@ -16,9 +16,9 @@ fn string_uppercase(mut data: String) {
 }
 
 fn main() {
-    let data = "Rust is great!".to_string();
+    let data: String = "Rust is great!".to_string();
 
-    get_char(data.clone()); // move -> clone
+    get_char(data.clone()); // move -> clone, 不获取所有权, 不影响本体data的所有权
 
-    string_uppercase(data); // borrow
+    string_uppercase(data); // borrow 获取参数所有权
 }

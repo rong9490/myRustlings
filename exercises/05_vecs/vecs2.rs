@@ -1,15 +1,19 @@
 fn vec_loop(input: &[i32]) -> Vec<i32> {
     let mut output: Vec<i32> = Vec::new();
 
+    // 什么情况需要 ?? input.iter_mut()
     for element in input {
         // TODO: Multiply each element in the `input` slice by 2 and push it to
         // the `output` vector.
+
+        // 解引用, 拿出里面的数值
         output.push((*element) * 2);
     }
 
     output
 }
 
+// map迭代器遍历方式
 fn vec_map_example(input: &[i32]) -> Vec<i32> {
     // An example of collecting a vector after mapping.
     // We map each element of the `input` slice to its value plus 1.
@@ -22,6 +26,8 @@ fn vec_map(input: &[i32]) -> Vec<i32> {
     // by 2, but with iterator mapping instead of manually pushing into an empty
     // vector.
     // See the example in the function `vec_map_example` above.
+
+    // iter()转迭代器; map+闭包; collect+turboFish收集回容器Vec
     input
         .iter()
         .map(|element| {

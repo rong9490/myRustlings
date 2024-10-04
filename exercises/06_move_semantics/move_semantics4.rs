@@ -8,13 +8,17 @@ mod tests {
     // Don't add, change or remove any line.
     #[test]
     fn move_semantics4() {
-        let mut x = Vec::new();
-        let y = &mut x; // 可变引用y
-        y.push(42);
-        // y.free(); 相当于隐式调用了
+        let mut x: Vec<i32> = Vec::new();
 
-        let z = &mut x; // 可变引用z
+        let y: &mut Vec<i32> = &mut x; // x的一个可变引用y
+        y.push(42);
+        // y.free(); 隐式释放内存了
+
+        let z: &mut Vec<i32> = &mut x; // x的另一个可变引用z
         z.push(13);
+        // z.free(); 隐式释放内存了
+
+        // HACK 只要不是同时存在两个可变引用就行
         assert_eq!(x, [42, 13]);
     }
 }

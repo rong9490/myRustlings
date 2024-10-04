@@ -1,6 +1,6 @@
 fn main() {
     // TODO: Create an array called `a` with at least 100 elements in it.
-    let a = ['8';100];
+    let a: [char; 100] = ['8';100]; // 创建数组的方式, 不是vec容器
 
     if a.len() >= 100 {
         println!("Wow, that's a big array!");

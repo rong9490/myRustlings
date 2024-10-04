@@ -4,7 +4,7 @@ fn bigger(a: i32, b: i32) -> i32 {
     // Do not use:
     // - another function call
     // - additional variables
-    if a > b {
+    if a >= b {
         a
     } else {
         b
@@ -13,9 +13,11 @@ fn bigger(a: i32, b: i32) -> i32 {
 
 fn main() {
     // You can optionally experiment here.
+    assert_eq!(42, bigger(42, 24))
 }
 
 // Don't mind this for now :)
+// 条件编译: 测试模块
 #[cfg(test)]
 mod tests {
     use super::*;

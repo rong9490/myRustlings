@@ -10,16 +10,18 @@
 
 // TODO: Write a function that calculates the price of an order of apples given
 // the quantity bought.
-fn calculate_price_of_apples(num: u8) -> u8 {
-    if num <= 40 {
-        num * 2
+fn calculate_price_of_apples(quantity: i32) -> i32 {
+    let price: i32 = if quantity > 40 {
+        1
     } else {
-        num
-    }
+        2
+    };
+    quantity * price
 }
 
 fn main() {
     // You can optionally experiment here.
+    assert_eq!(60, calculate_price_of_apples(30))
 }
 
 // Don't change the tests!

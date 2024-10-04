@@ -3,6 +3,6 @@ fn main() {
     println!("Spell a number: {}", number);
 
     // TODO: Fix the compiler error by changing the line below without renaming the variable.
-    let number: i32 = 3;
+    let number: i32 = 3; // shadowing 可以改变类型
     println!("Number plus two is: {}", number + 2);
 }
