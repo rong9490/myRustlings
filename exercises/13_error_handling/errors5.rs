@@ -47,15 +47,17 @@ impl PositiveNonzeroInteger {
     }
 }
 
-// TODO: Add the correct return type `Result<(), Box<dyn ???>>`. What can we
 // use to describe both errors? Is there a trait which both errors implement?
 // Box<dyn Error> 包含了 ParseIntError 和 CreationError!!
 // 返回通用的错误, 不一定需要指定具体的错误类型
+
+// 错误类型的顶层Trait: Box<dyn Error>
+// 兼容多种错误类型
 fn main() -> Result<(), Box<dyn Error>> {
     let pretend_user_input: &str = "42";
-    let x: i64 = pretend_user_input.parse()?; // 自动抛出错误
-    // new实例化结构体: 成功 或 失败
-    let result = PositiveNonzeroInteger::new(x)?;
+    let x: i64 = pretend_user_input.parse()?; // 自动抛出默认错误
+    
+    let result: PositiveNonzeroInteger = PositiveNonzeroInteger::new(x)?; // 抛出特定错误枚举!!
     println!("output={:?}", result);
     Ok(())
 }

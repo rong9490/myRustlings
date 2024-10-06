@@ -46,8 +46,8 @@ impl PositiveNonzeroInteger {
     }
 
     fn parse(s: &str) -> Result<Self, ParsePosNonzeroError> {
-        // TODO: change this to return an appropriate error instead of panicking
         // when `parse()` returns an error.
+        // map_error用法 在错误时, 会将默认错误转成我们特定的错误类型!!
         let x: i64 = s
             .parse()
             .map_err(|e: ParseIntError| ParsePosNonzeroError::from_parse_int(e))?;
@@ -57,6 +57,8 @@ impl PositiveNonzeroInteger {
         Self::new(x).map_err(ParsePosNonzeroError::from_creation)
     }
 }
+
+// HACK 重新理解!!
 
 fn main() {
     // You can optionally experiment here.

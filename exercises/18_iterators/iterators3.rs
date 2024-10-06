@@ -1,3 +1,4 @@
+// 三种类型的错误枚举
 #[derive(Debug, PartialEq, Eq)]
 enum DivisionError {
     // Example: 42 / 0

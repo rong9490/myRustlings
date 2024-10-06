@@ -3,10 +3,11 @@
 // But in this exercise, the compiler needs some help through a type annotation.
 
 fn main() {
-    // TODO: Fix the compiler error by annotating the type of the vector
     // `Vec<T>`. Choose `T` as some integer type that can be created from
     // `u8` and `i8`.
+
     // i32 能同时兼容 u8 和 i8
+    // 父级包含两个子集
     let mut numbers: Vec<i32> = Vec::new();
 
     // Don't change the lines below.

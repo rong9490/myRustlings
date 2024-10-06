@@ -1,13 +1,14 @@
 // Lifetimes are also needed when structs hold references.
 
-// TODO: Fix the compiler errors about the struct.
+// 结构体与其引用字段的生命周期
+
 struct Book<'a> {
     author: &'a str,
     title: &'a str,
 }
 
 fn main() {
-    let book = Book {
+    let book: Book<'_> = Book {
         author: "George Orwell",
         title: "1984",
     };

@@ -5,9 +5,9 @@ trait AppendBar {
 }
 
 impl AppendBar for String {
-    // TODO: Implement `AppendBar` for the type `String`.
     fn append_bar(self) -> String {
-        format!("{}Bar", self)
+        let temp: String = self + "Bar"; // 也可以用format, String是有用所有权的动态字符串, 所以可以执行拼接
+        temp
     }
 }
 

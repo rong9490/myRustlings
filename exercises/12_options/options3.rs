@@ -7,10 +7,9 @@ struct Point {
 fn main() {
     let optional_point: Option<Point> = Some(Point { x: 100, y: 200 });
 
-    // if let Some(optional_point) = optional_point {
 
-    // }
-
+    // HACK Some(ref p) 什么含义
+    // 匹配引用, 而不是拿到所有权, 只是读的操作是没有问题的
     match optional_point {
         Some(ref p) => println!("Co-ordinates are {},{}", p.x, p.y),
         _ => panic!("No match!"),

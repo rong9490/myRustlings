@@ -4,14 +4,14 @@ trait AppendBar {
 
 impl AppendBar for Vec<String> {
     fn append_bar(mut self) -> Vec<String> {
-        self.push("Bar".to_string());
+        // mut Vec<String>
+        // 容器的追加元素操作push
+        self.push(String::from("Bar"));
         self
     }
 }
 
-// TODO: Implement the trait `AppendBar` for a vector of strings.
 // `append_bar` should push the string "Bar" into the vector.
-
 fn main() {
     // You can optionally experiment here.
 }
@@ -22,7 +22,7 @@ mod tests {
 
     #[test]
     fn is_vec_pop_eq_bar() {
-        let mut foo = vec![String::from("Foo")].append_bar();
+        let mut foo: Vec<String> = vec![String::from("Foo")].append_bar();
         assert_eq!(foo.pop().unwrap(), "Bar");
         assert_eq!(foo.pop().unwrap(), "Foo");
     }

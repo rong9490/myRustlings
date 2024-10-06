@@ -1,10 +1,11 @@
 #![allow(dead_code)]
 
 trait Licensed {
-    // TODO: Add a default implementation for `licensing_info` so that
     // implementors like the two structs below can share that default behavior
     // without repeating the function.
     // The default license information should be the string "Default license".
+
+    // Trait的默认实现方法
     fn licensing_info(&self) -> String {
         "Default license".to_string()
     }
@@ -18,6 +19,7 @@ struct OtherSoftware {
     version_number: String,
 }
 
+// 两个结构体都实现同一个方法(如何兼容?)
 impl Licensed for SomeSoftware {} // Don't edit this line.
 impl Licensed for OtherSoftware {} // Don't edit this line.
 

@@ -13,7 +13,6 @@ fn total_cost(item_quantity: &str) -> Result<i32, ParseIntError> {
     Ok(qty * cost_per_item + processing_fee)
 }
 
-// TODO: Fix the compiler error by changing the signature and body of the
 // `main` function.
 // 抛出错误, 向上传播, 扩散的!
 fn main() -> Result<(), ParseIntError> {
@@ -21,7 +20,7 @@ fn main() -> Result<(), ParseIntError> {
     let pretend_user_input: &str = "8";
 
     // Don't change this line.
-    let cost: i32 = total_cost(pretend_user_input)?;
+    let cost: i32 = total_cost(pretend_user_input)?; // 这里抛出的错误, 需要修改main函数签名接收
 
     if cost > tokens {
         println!("You can't afford that many!");

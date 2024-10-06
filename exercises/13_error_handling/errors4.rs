@@ -1,5 +1,5 @@
 #[derive(PartialEq, Debug)]
-// 自定义错误类型枚举
+// 自定义错误枚举, 区分不同的情况
 enum CreationError {
     Negative,
     Zero,
@@ -11,10 +11,9 @@ struct PositiveNonzeroInteger(u64);
 impl PositiveNonzeroInteger {
     // 关联方法: 创建成功, 失败;
     fn new(value: i64) -> Result<Self, CreationError> {
-        // TODO: This function shouldn't always return an `Ok`.
-        
+        // 直接返回模式匹配的值
         match value {
-            x if x < 0 => Err(CreationError::Negative),
+            x if x < 0 => Err(CreationError::Negative), // 创建一个错误实例
             0 => Err(CreationError::Zero),
             _ => Ok(Self(value as u64))
         }

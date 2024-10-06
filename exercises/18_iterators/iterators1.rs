@@ -8,19 +8,20 @@ fn main() {
 
 #[cfg(test)]
 mod tests {
+    use std::slice::Iter;
+
     #[test]
     fn iterators() {
         let my_fav_fruits: [&str; 5] = ["banana", "custard apple", "avocado", "peach", "raspberry"];
 
-        // TODO: Create an iterator over the array.
-        let mut fav_fruits_iterator = my_fav_fruits.iter(); // vec.iter() 将容器转迭代器
+        let mut fav_fruits_iterator: Iter<'_, &str> = my_fav_fruits.iter(); // vec.iter() 将容器转迭代器
 
         // next() 消费一个元素(mut), Some(T) 或 None
         assert_eq!(fav_fruits_iterator.next(), Some(&"banana"));
-        assert_eq!(fav_fruits_iterator.next(), Some(&"custard apple")); // TODO: Replace `todo!()`
+        assert_eq!(fav_fruits_iterator.next(), Some(&"custard apple"));
         assert_eq!(fav_fruits_iterator.next(), Some(&"avocado"));
-        assert_eq!(fav_fruits_iterator.next(), Some(&"peach")); // TODO: Replace `todo!()`
+        assert_eq!(fav_fruits_iterator.next(), Some(&"peach"));
         assert_eq!(fav_fruits_iterator.next(), Some(&"raspberry"));
-        assert_eq!(fav_fruits_iterator.next(), None); // TODO: Replace `todo!()`
+        assert_eq!(fav_fruits_iterator.next(), None);
     }
 }
