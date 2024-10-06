@@ -7,16 +7,14 @@
 use std::collections::HashMap;
 
 fn fruit_basket() -> HashMap<String, u32> {
-    // TODO: Declare the hash map.
+    // HashMap::with_capacity 预先分配内存, 可能会更多;
     let mut basket: HashMap<String, u32> = HashMap::new();
 
     // Two bananas are already given for you :)
+    // 哈希的key 需要获得所有权, 所以是String
     basket.insert(String::from("banana"), 2);
     basket.insert(String::from("orange"), 1);
     basket.insert(String::from("apple"), 2);
-
-    // TODO: Put more fruits in your basket.
-
     basket
 }
 
@@ -30,13 +28,13 @@ mod tests {
 
     #[test]
     fn at_least_three_types_of_fruits () {
-        let basket = fruit_basket();
+        let basket: HashMap<String, u32> = fruit_basket();
         assert!(basket.len() >= 3);
     }
 
     #[test]
     fn at_least_five_fruits() {
-        let basket = fruit_basket();
-        assert!(basket.values().sum::<u32>() >= 5); // 迭代器 -> 适配器
+        let basket: HashMap<String, u32> = fruit_basket();
+        assert!(basket.values().sum::<u32>() >= 5); // 迭代器 -> 适配器 --> 消费器, 闭包
     }
 }

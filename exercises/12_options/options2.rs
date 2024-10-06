@@ -9,7 +9,9 @@ mod tests {
         let target = "rustlings";
         let optional_target = Some(target);
 
-        // TODO: Make this an if-let statement whose value is `Some`.
+        // if let Some() = 
+        // 这种结构型语法, 处理Option匹配! == match
+        // 简写的模式匹配!
         if let Some(word) = optional_target {
             assert_eq!(word, target);
         }
@@ -29,12 +31,16 @@ mod tests {
         // TODO: Make this a while-let statement. Remember that `Vec::pop()`
         // adds another layer of `Option`. You can do nested pattern matching
         // in if-let and while-let statements.
+
         // 注意这里是两层 Option<Options<i8>> --> 需要两层Some(Some(integer))
+        // 模式匹配, 位置决定
+        // 这里 while, 两层有一层不存在就会中断, 特别注意!!
         while let Some(Some(integer)) = optional_integers.pop() {
             assert_eq!(integer, cursor);
             cursor -= 1;
         }
 
+        // 检查游标
         assert_eq!(cursor, 0);
     }
 }

@@ -1,19 +1,21 @@
 fn trim_me(input: &str) -> &str {
-    // TODO: Remove whitespace from both ends of a string.
+    // 只读的视图, 起始位置, 长度
+    // trim刚好是移动两端指针起始变化, 长度变化
+    // 所以trim在&str上, 方法返回的也是&str
     input.trim()
-    // 理解为什么方法在&str上(只读的视图), trim 修改起始指针与长度
-    // 
 }
 
 fn compose_me(input: &str) -> String {
-    // TODO: Add " world!" to the string! There are multiple ways to do this.
-    format!("{input} world!")
-    // input.to_string().push_str(" world!");
+    // String是可变的堆内存字符粗, 所以可以进行push操作
+    let mut s: String = input.to_string();
+    s.push_str(" world!");
+    s
 }
 
 fn replace_me(input: &str) -> String {
-    // TODO: Replace "cars" in the string with "balloons".
-    // 理解为什么replace返回的是String, 而不是&str
+    // replace也是需要修改内存的, 不能通过指针操作完成
+    // 所以返回的是String类型字符串
+    // 需要动态修改堆内存上的字符串, 所以返回的是String类型
     input.replace("cars", "balloons")
 }
 
