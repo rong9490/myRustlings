@@ -12,6 +12,7 @@ mod tests {
 
     #[test]
     fn iterators() {
+        // 迭代器是函数式编程的特性
         let my_fav_fruits: [&str; 5] = ["banana", "custard apple", "avocado", "peach", "raspberry"];
 
         let mut fav_fruits_iterator: Iter<'_, &str> = my_fav_fruits.iter(); // vec.iter() 将容器转迭代器

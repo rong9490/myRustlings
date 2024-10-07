@@ -9,7 +9,7 @@ fn main() {
     // You can optionally experiment here.
 }
 
-// cargo test 才会编译
+// 执行 cargo test 才会编译; 条件编译
 #[cfg(test)]
 mod tests {
     use super::*;
