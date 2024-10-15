@@ -1,9 +1,4 @@
 fn bigger(a: i32, b: i32) -> i32 {
-    // TODO: Complete this function to return the bigger number!
-    // If both numbers are equal, any of them can be returned.
-    // Do not use:
-    // - another function call
-    // - additional variables
     if a >= b {
         a
     } else {
@@ -12,11 +7,10 @@ fn bigger(a: i32, b: i32) -> i32 {
 }
 
 fn main() {
-    // You can optionally experiment here.
+    // 单元测试外也可以使用 assert_eq
     assert_eq!(42, bigger(42, 24))
 }
 
-// Don't mind this for now :)
 // 条件编译: 测试模块
 #[cfg(test)]
 mod tests {

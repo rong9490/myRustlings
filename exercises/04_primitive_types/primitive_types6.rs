@@ -8,7 +8,8 @@ mod tests {
     fn indexing_tuple() {
         let numbers: (i32, i32, i32) = (1, 2, 3);
 
-        // TODO: Use a tuple index to access the second element of `numbers`
+        assert_eq!(numbers.2, 3);
+
         // and assign it to a variable called `second`.
         // 元组也是index索引访问
         let second: i32 = numbers.1;

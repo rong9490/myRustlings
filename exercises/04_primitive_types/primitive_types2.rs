@@ -1,28 +1,20 @@
 // Characters (`char`)
 
 fn main() {
-    // Note the _single_ quotes, these are different from the double quotes
-    // you've been seeing around.
-    let my_first_initial = 'C'; // 字符占4个字节
-    if my_first_initial.is_alphabetic() { // 字母判断
-        println!("Alphabetical!");
-    } else if my_first_initial.is_numeric() {
-        println!("Numerical!");
-    } else {
-        println!("Neither alphabetic nor numeric!");
-    }
+    let my_first_initial: char = 'C'; // 字符
+    let len: usize = std::mem::size_of_val(&my_first_initial); // 占用长度
+    let addr: usize = std::ptr::addr_of!(my_first_initial) as usize; // 内存地址
+    let code_point: Vec<u8> = my_first_initial.to_string().into_bytes(); // 字码
+    assert_eq!(len, 4);
+    assert_eq!(code_point[0], 67);
+    println!("{}", len);
+    println!("{:p}", addr as *const ());
+    println!("{:?}", code_point[0]);
 
-    // TODO: Analogous to the example before, declare a variable called `your_character`
-    // below with your favorite character.
-    // Try a letter, try a digit (in single quotes), try a special character, try a character
-    // from a different language than your own, try an emoji 😉
-    let your_character = '😉';
+    assert_eq!(my_first_initial.is_alphabetic(), true);
+    assert_eq!(my_first_initial.is_numeric(), false);
 
-    if your_character.is_alphabetic() {
-        println!("Alphabetical!");
-    } else if your_character.is_numeric() {
-        println!("Numerical!");
-    } else {
-        println!("Neither alphabetic nor numeric!");
-    }
+    let your_character: char = '😉';
+    assert_eq!(your_character.is_alphabetic(), false);
+    assert_eq!(your_character.is_numeric(), false);
 }

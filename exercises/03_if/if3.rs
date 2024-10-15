@@ -1,7 +1,5 @@
-fn animal_habitat(animal: &str) -> &str {
-    // TODO: Fix the compiler error in the statement below.
-    
-    // if表达式的返回值, 用一个变量绑定
+pub fn animal_habitat(animal: &str) -> (i32, &str) {
+    // 此时的if是个语句了, 拥有了返回值, 需要加上分号
     let identifier: i32 = if animal == "crab" {
         1
     } else if animal == "gopher" {
@@ -12,16 +10,15 @@ fn animal_habitat(animal: &str) -> &str {
         42
     };
 
-    // Don't change the expression below!
-    // 这个表达式的值直接返回'return'
+    // 默认return返回
     if identifier == 1 {
-        "Beach"
+        (identifier, "Beach")
     } else if identifier == 2 {
-        "Burrow"
+        (identifier, "Burrow")
     } else if identifier == 3 {
-        "Desert"
+        (identifier, "Desert")
     } else {
-        "Unknown"
+        (identifier, "Unknown")
     }
 }
 
@@ -29,28 +26,35 @@ fn main() {
     // You can optionally experiment here.
 }
 
-// Don't change the tests!
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
     fn gopher_lives_in_burrow() {
-        assert_eq!(animal_habitat("gopher"), "Burrow")
+        let result: (i32, &str) = animal_habitat("gopher");
+        assert_eq!(result.0, 2);
+        assert_eq!(result.1, "Burrow");
     }
 
     #[test]
     fn snake_lives_in_desert() {
-        assert_eq!(animal_habitat("snake"), "Desert")
+        let result: (i32, &str) = animal_habitat("snake");
+        assert_eq!(result.0, 3);
+        assert_eq!(result.1, "Desert");
     }
 
     #[test]
     fn crab_lives_on_beach() {
-        assert_eq!(animal_habitat("crab"), "Beach")
+        let result: (i32, &str) = animal_habitat("crab");
+        assert_eq!(result.0, 1);
+        assert_eq!(result.1, "Beach");
     }
 
     #[test]
     fn unknown_animal() {
-        assert_eq!(animal_habitat("dinosaur"), "Unknown")
+        let result: (i32, &str) = animal_habitat("dinosaur");
+        assert_eq!(result.0, 42);
+        assert_eq!(result.1, "Unknown");
     }
 }

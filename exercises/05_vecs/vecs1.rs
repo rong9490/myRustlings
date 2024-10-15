@@ -1,4 +1,4 @@
-fn array_and_vec() -> ([i32; 4], Vec<i32>) {
+pub fn array_and_vec() -> ([i32; 4], Vec<i32>) {
     let a: [i32; 4] = [10, 20, 30, 40]; // Array 数组, 可以在栈上, 也可以放到堆上
 
     // TODO: Create a vector called `v` which contains the exact same elements as in the array `a`.
