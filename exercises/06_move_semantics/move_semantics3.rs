@@ -1,8 +1,5 @@
-// TODO: Fix the compiler error in the function without adding any new line.
-// 外面的不是mut, 但是在函数参数上可以额外添加mut, 然后再修改变量
-fn fill_vec(mut vec: Vec<i32>) -> Vec<i32> {
+pub fn fill_vec(/* 拥有所有权可以修改 */mut vec: Vec<i32>) -> Vec<i32> {
     vec.push(88);
-
     vec
 }
 
@@ -16,8 +13,8 @@ mod tests {
 
     #[test]
     fn move_semantics3() {
-        let vec0 = vec![22, 44, 66];
-        let vec1 = fill_vec(vec0);
+        let vec0: Vec<i32> = vec![22, 44, 66];
+        let vec1: Vec<i32> = fill_vec(vec0); // vec0已经移动失效了!!
         assert_eq!(vec1, [22, 44, 66, 88]);
     }
 }
