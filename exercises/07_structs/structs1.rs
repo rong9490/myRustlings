@@ -55,8 +55,12 @@ mod tests {
     #[test]
     fn unit_structs() {
         let unit_struct: UnitStruct = UnitStruct;
-        // 空结构体, 序列化为其name: UnitStruct
-        let message = format!("{unit_struct:?}s are fun!");
+
+        assert_eq!(std::mem::size_of_val(&unit_struct), 0); // 空结构体, 不占用任何内存!
+        assert_eq!(std::mem::align_of_val(&unit_struct), 1); // 空结构体, 对齐值为1
+
+        // 空结构体, 序列化为其 name: UnitStruct
+        let message: String = format!("{unit_struct:?}s are fun!");
 
         assert_eq!(message, "UnitStructs are fun!");
     }

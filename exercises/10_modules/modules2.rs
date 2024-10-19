@@ -1,5 +1,3 @@
-// You can bring module paths into scopes and provide new names for them with
-// the `use` and `as` keywords.
 
 #[allow(dead_code)]
 mod delicious_snacks {
@@ -7,7 +5,7 @@ mod delicious_snacks {
     pub use self::fruits::PEAR as fruit;
     pub use self::veggies::CUCUMBER as veggie;
 
-    // 嵌套模块, 在中间模块可以转发/重命名子模块
+    // 嵌套子模块, 在中间模块可以转发/重命名子模块
     mod fruits {
         pub const PEAR: &str = "Pear";
         pub const APPLE: &str = "Apple";

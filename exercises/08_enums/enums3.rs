@@ -1,25 +1,33 @@
 // 点的 结构体
 struct Point {
-    x: u64,
-    y: u64,
+    x: u64, // 8字节
+    y: u64, // 8字节
 }
 
 enum Message {
-    Resize { width: u64, height: u64 },
-    Move(Point),
-    Echo(String),
-    ChangeColor(u8, u8, u8),
-    Quit,
+    Resize { width: u64, height: u64 }, // 16字节
+    Move(Point),                        // 16字节
+    Echo(String),                       // 24字节 = 指针(8) + 长度(8) + 容量(8)
+    ChangeColor(u8, u8, u8),            // 3字节
+    Quit,                               // 1字节
+                                        // 总共: 16 + 16 + 24 + 3 + 1 = 60字节
+                                        // 但是实际占用内存为: 64字节, 因为内存对齐
+                                        // 内存对齐: 8字节
+                                        // 所以实际占用内存为: 64字节
 }
 
 struct State {
-    width: u64,
-    height: u64,
-    position: Point,
-    message: String,
+    width: u64,      // 8字节
+    height: u64,     // 8字节
+    position: Point, // 16字节
+    message: String, // 24字节
     // RGB color composed of red, green and blue.
-    color: (u8, u8, u8),
-    quit: bool,
+    color: (u8, u8, u8), // 3字节
+    quit: bool,          // 1字节
+                         // 总共: 8 + 8 + 16 + 24 + 3 + 1 = 60字节
+                         // 但是实际占用内存为: 64字节, 因为内存对齐
+                         // 内存对齐: 8字节
+                         // 所以实际占用内存为: 64字节
 }
 
 // State上附加的方法
@@ -80,6 +88,10 @@ mod tests {
             quit: false,
         };
 
+        assert_eq!(std::mem::size_of_val(&Point { x: 0, y: 0 }), 16); // u64占8个字节, 所以Point占16个字节
+        assert_eq!(std::mem::size_of_val(&state), 64);
+        assert_eq!(std::mem::align_of_val(&state), 8); // 内存对齐
+
         // 调用process方法
         state.process(Message::Resize {
             width: 10,
@@ -96,6 +108,6 @@ mod tests {
         assert_eq!(state.position.y, 15);
         assert_eq!(state.message, "Hello world!");
         assert_eq!(state.color, (255, 0, 255));
-        assert!(state.quit);
+        assert_eq!(state.quit, true);
     }
 }

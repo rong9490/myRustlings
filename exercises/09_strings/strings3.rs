@@ -1,21 +1,18 @@
-fn trim_me(input: &str) -> &str {
-    // 只读的视图, 起始位置, 长度
-    // trim刚好是移动两端指针起始变化, 长度变化
-    // 所以trim在&str上, 方法返回的也是&str
+pub fn trim_me(input: &str) -> &str {
+    // trim方法 只需要改变视图指针和长度, 所以来源和返回都是 &str
     input.trim()
 }
 
-fn compose_me(input: &str) -> String {
-    // String是可变的堆内存字符粗, 所以可以进行push操作
+pub fn compose_me(input: &str) -> String {
+    // String是 可变的 / 拥有所有权的, 堆内存字符串, 可以进行push操作
     let mut s: String = input.to_string();
     s.push_str(" world!");
     s
 }
 
-fn replace_me(input: &str) -> String {
-    // replace也是需要修改内存的, 不能通过指针操作完成
-    // 所以返回的是String类型字符串
-    // 需要动态修改堆内存上的字符串, 所以返回的是String类型
+pub fn replace_me(input: &str) -> String {
+    // replace需要修改内存, 不能通过指针操作完成(所以不能用&str)
+    // String 可修改 / 有所有权的 字符串, 所以返回的是String类型
     input.replace("cars", "balloons")
 }
 
@@ -29,6 +26,7 @@ mod tests {
 
     #[test]
     fn trim_a_string() {
+        // 消除两端空格
         assert_eq!(trim_me("Hello!     "), "Hello!");
         assert_eq!(trim_me("  What's up!"), "What's up!");
         assert_eq!(trim_me("   Hola!  "), "Hola!");

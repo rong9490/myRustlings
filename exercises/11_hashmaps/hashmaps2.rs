@@ -10,10 +10,9 @@
 
 use std::collections::HashMap;
 
-// HACK 作为Hash的key, 需要实现 Hash / PartialEq / Eq
-// 解决哈希冲突
+// 作为HashKey, 解决哈希冲突需要实现 Hash / PartialEq / Eq
 #[derive(Hash, PartialEq, Eq, Debug)]
-enum Fruit {
+pub enum Fruit {
     Apple,
     Banana,
     Mango,
@@ -21,8 +20,8 @@ enum Fruit {
     Pineapple,
 }
 
-fn fruit_basket(basket: &mut HashMap<Fruit, u32>) {
-    let fruit_kinds = [
+pub fn fruit_basket(basket: &mut HashMap<Fruit, u32>) {
+    let fruit_kinds: [Fruit; 5] = [
         Fruit::Apple,
         Fruit::Banana,
         Fruit::Mango,
@@ -30,16 +29,9 @@ fn fruit_basket(basket: &mut HashMap<Fruit, u32>) {
         Fruit::Pineapple,
     ];
 
-    // 遍历
+    // HACK 数组iter转迭代器 如何 array.iter()
     for fruit in fruit_kinds {
-        // basket. Note that you are not allowed to put any type of fruit that's
-        // already present!
-
-        // HACK 如果没有才插入: 等同于: contains_key + insert
-        // entry查询出来的值, 返回结果, 链式api, 如果不存在才插入insert
-        // lazy的闭包函数!
-        // insert, entry, or_insert_with
-        basket.entry(fruit).or_insert_with(|| 1);
+        basket.entry(fruit).or_insert(1);
     }
 }
 
@@ -51,15 +43,16 @@ fn main() {
 mod tests {
     use super::*;
 
-    // Don't modify this function!
     fn get_fruit_basket() -> HashMap<Fruit, u32> {
-        let content = [(Fruit::Apple, 4), (Fruit::Mango, 2), (Fruit::Lychee, 5)];
-        HashMap::from_iter(content) // 通过元组列表来创建HashMap
+        // pair = [(key, value); 3] 数组
+        let content: [(Fruit, u32); 3] = [(Fruit::Apple, 4), (Fruit::Mango, 2), (Fruit::Lychee, 5)];
+        // 通过元组列表来创建 HashMap::from_iter
+        HashMap::from_iter(content)
     }
 
     #[test]
     fn test_given_fruits_are_not_modified() {
-        let mut basket = get_fruit_basket();
+        let mut basket: HashMap<Fruit, u32> = get_fruit_basket();
         fruit_basket(&mut basket);
         assert_eq!(*basket.get(&Fruit::Apple).unwrap(), 4);
         assert_eq!(*basket.get(&Fruit::Mango).unwrap(), 2);
