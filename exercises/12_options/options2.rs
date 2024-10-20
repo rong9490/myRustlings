@@ -6,35 +6,48 @@ fn main() {
 mod tests {
     #[test]
     fn simple_option() {
-        let target = "rustlings";
-        let optional_target = Some(target);
+        let target: &str = "rustlings";
 
-        // if let Some() = 
-        // 这种结构型语法, 处理Option匹配! == match
-        // 简写的模式匹配!
-        if let Some(word) = optional_target {
-            assert_eq!(word, target);
-        }
+        // 复习下: 为什么&str内存固定为16字节
+        assert_eq!(std::mem::size_of::<Option<&str>>(), 16);
+
+        let optional_target: Option<&str> = Some(target);
+
+        // 这里Option的内存占用不变 !! None 不占用内存
+        assert_eq!(std::mem::size_of::<Option<&str>>(), 16);
+
+        // 简写的模式匹配! if let some 表达式
+        let word: &str = if let Some(word) = optional_target {
+            word
+        } else {
+            panic!("word is None");
+        };
+
+        assert_eq!(word, target);
     }
 
     #[test]
     fn layered_option() {
-        let range = 10;
+        let range: i8 = 10;
+
+        assert_eq!(std::mem::size_of::<Option<i8>>(), 2);
+
+        // 存None的容器
         let mut optional_integers: Vec<Option<i8>> = vec![None];
 
+        // 遍历range, 填充容器
         for i in 1..=range {
             optional_integers.push(Some(i));
         }
 
-        let mut cursor = range;
+        // TODO 待测试
+        // optional_integers.push(None);
 
-        // TODO: Make this a while-let statement. Remember that `Vec::pop()`
-        // adds another layer of `Option`. You can do nested pattern matching
-        // in if-let and while-let statements.
+        // 游标
+        let mut cursor: i8 = range;
 
         // 注意这里是两层 Option<Options<i8>> --> 需要两层Some(Some(integer))
-        // 模式匹配, 位置决定
-        // 这里 while, 两层有一层不存在就会中断, 特别注意!!
+        // while, 两层有一层不存在就会中断, 特别注意!! (模式匹配, 位置决定)
         while let Some(Some(integer)) = optional_integers.pop() {
             assert_eq!(integer, cursor);
             cursor -= 1;

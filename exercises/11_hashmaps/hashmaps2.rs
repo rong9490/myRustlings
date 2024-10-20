@@ -1,16 +1,6 @@
-// We're collecting different fruits to bake a delicious fruit cake. For this,
-// we have a basket, which we'll represent in the form of a hash map. The key
-// represents the name of each fruit we collect and the value represents how
-// many of that particular fruit we have collected. Three types of fruits -
-// Apple (4), Mango (2) and Lychee (5) are already in the basket hash map. You
-// must add fruit to the basket so that there is at least one of each kind and
-// more than 11 in total - we have a lot of mouths to feed. You are not allowed
-// to insert any more of the fruits that are already in the basket (Apple,
-// Mango, and Lychee).
-
 use std::collections::HashMap;
 
-// 作为HashKey, 解决哈希冲突需要实现 Hash / PartialEq / Eq
+// HashKey(解决哈希冲突: Hash, PartialEq, Eq)
 #[derive(Hash, PartialEq, Eq, Debug)]
 pub enum Fruit {
     Apple,
@@ -29,9 +19,12 @@ pub fn fruit_basket(basket: &mut HashMap<Fruit, u32>) {
         Fruit::Pineapple,
     ];
 
-    // HACK 数组iter转迭代器 如何 array.iter()
-    for fruit in fruit_kinds {
-        basket.entry(fruit).or_insert(1);
+    let def_value: u32 = 1;
+
+    // or_insert: 当没有时插入, 否则跳过 = content + insert
+    // 数组显式转迭代器的三种形式: iter, iter_mut, into_iter
+    for fruit in fruit_kinds.into_iter() {
+        basket.entry(fruit).or_insert(def_value);
     }
 }
 
@@ -46,8 +39,10 @@ mod tests {
     fn get_fruit_basket() -> HashMap<Fruit, u32> {
         // pair = [(key, value); 3] 数组
         let content: [(Fruit, u32); 3] = [(Fruit::Apple, 4), (Fruit::Mango, 2), (Fruit::Lychee, 5)];
-        // 通过元组列表来创建 HashMap::from_iter
-        HashMap::from_iter(content)
+
+        // 通过元组形式列表来创建 HashMap::from_iter
+        let hash: HashMap<Fruit, u32> = HashMap::from_iter(content);
+        hash
     }
 
     #[test]
