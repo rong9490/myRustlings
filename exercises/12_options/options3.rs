@@ -21,7 +21,10 @@ fn main() {
     // HACK Some(ref p) 什么含义
     // 匹配引用而不拿所有权, 只读操作是没有问题
     match optional_point {
-        Some(ref p) => println!("Co-ordinates are {},{}", p.x, p.y),
+        Some(ref p) => {
+            assert_eq!(std::mem::size_of_val(&p), 8); // 只读引用
+            println!("Co-ordinates are {},{}", p.x, p.y)
+        }
         _ => panic!("No match!"),
     };
 

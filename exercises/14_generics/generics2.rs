@@ -1,14 +1,13 @@
-// This powerful wrapper provides the ability to store a positive integer value.
-struct Wrapper<T> {
-    value: T,
+pub struct Wrapper<T> {
+    pub value: T, // 结构体字段也能用泛型
 }
 
-// impl 可以实现泛型的某一种类型的 具体实现!
+// impl 可以为其中一种泛型实现方法!
 // impl Wrapper<u32>
 // impl Wrapper<&str> 
 
 impl<T> Wrapper<T> {
-    fn new(value: T) -> Self {
+    pub fn new(value: T) -> Self {
         Wrapper { value }
     }
 }
@@ -23,11 +22,23 @@ mod tests {
 
     #[test]
     fn store_u32_in_wrapper() {
-        assert_eq!(Wrapper::new(42).value, 42);
+        let wrapper: Wrapper<u32> = Wrapper::new(42);
+
+        assert_eq!(std::mem::size_of::<Wrapper<u32>>(), 4);
+        assert_eq!(std::mem::size_of_val(&wrapper), 4);
+        assert_eq!(std::mem::size_of_val(&wrapper.value), 4);
+
+        assert_eq!(wrapper.value, 42);
     }
 
     #[test]
     fn store_str_in_wrapper() {
-        assert_eq!(Wrapper::new("Foo").value, "Foo");
+        let wrapper: Wrapper<&str> = Wrapper::new("Foo");
+
+        assert_eq!(std::mem::size_of::<Wrapper<&str>>(), 16);
+        assert_eq!(std::mem::size_of_val(&wrapper), 16);
+        assert_eq!(std::mem::size_of_val(&wrapper.value), 16);
+
+        assert_eq!(wrapper.value, "Foo");
     }
 }

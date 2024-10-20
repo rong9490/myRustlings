@@ -1,38 +1,22 @@
-// Say we're writing a game where you can buy items with tokens. All items cost
-// 5 tokens, and whenever you purchase items there is a processing fee of 1
-// token. A player of the game will type in how many items they want to buy, and
-// the `total_cost` function will calculate the total cost of the items. Since
-// the player typed in the quantity, we get it as a string. They might have
-// typed anything, not just numbers!
-//
-// Right now, this function isn't handling the error case at all. What we want
-// to do is: If we call the `total_cost` function on a string that is not a
-// number, that function will return a `ParseIntError`. In that case, we want to
-// immediately return that error from our function and not try to multiply and
-// add.
-//
-// There are at least two ways to implement this that are both correct. But one
-// is a lot shorter!
-
 use std::num::ParseIntError;
 
-fn total_cost(item_quantity: &str) -> Result<i32, ParseIntError> {
+pub fn total_cost(item_quantity: &str) -> Result<i32, ParseIntError> {
     let processing_fee: i32 = 1;
     let cost_per_item: i32 = 5;
 
     // parse 类型转换为i32, 转换失败会抛出 ParseIntError
     let qty: Result<i32, ParseIntError> = item_quantity.parse::<i32>();
 
-    // 完整版匹配处理错误
+    // 01. 完整匹配错误
     // let qty = match qty {
     //     Ok(q) => q, // 如果成功原样返回
     //     Err(e) => return Err(e), // 如果错误就提前结束抛出错误了~~
     // };
 
-    // 简写语法糖: 问号表达式, 直接向上传播错误!!
+    // 02. 简写语法糖: 问号表达式, 向上传播错误
     let qty: i32 = qty?;
 
-    Ok(qty * cost_per_item + processing_fee)
+    Result::Ok(qty * cost_per_item + processing_fee)
 }
 
 fn main() {
@@ -46,14 +30,22 @@ mod tests {
 
     #[test]
     fn item_quantity_is_a_valid_number() {
-        assert_eq!(total_cost("34"), Ok(171));
+        let result = total_cost("34");
+        assert_eq!(result.is_ok(), true);
+        assert_eq!(result.is_err(), false);
+        assert_eq!(result, Ok(171));
+        assert_eq!(result.expect("error"), 171);
     }
 
     #[test]
     fn item_quantity_is_an_invalid_number() {
-        assert_eq!(
-            total_cost("beep boop").unwrap_err().kind(),
-            &IntErrorKind::InvalidDigit,
-        );
+        let result: Result<i32, ParseIntError> = total_cost("beep boop");
+        assert_eq!(result.is_err(), true);
+        assert_eq!(result.is_ok(), false);
+
+        // 错误类型是 ParseIntError, InvalidDigit 是错误值
+        let err: ParseIntError = result.unwrap_err();
+        assert_eq!(err.kind(), &IntErrorKind::InvalidDigit);
+        assert_eq!(err.to_string(), "invalid digit found in string");
     }
 }

@@ -1,16 +1,3 @@
-// This exercise is an altered version of the `errors4` exercise. It uses some
-// concepts that we won't get to until later in the course, like `Box` and the
-// `From` trait. It's not important to understand them in detail right now, but
-// you can read ahead if you like. For now, think of the `Box<dyn ???>` type as
-// an "I want anything that does ???" type.
-//
-// In short, this particular use case for boxes is for when you want to own a
-// value and you care only that it is a type which implements a particular
-// trait. To do so, The `Box` is declared as of type `Box<dyn Trait>` where
-// `Trait` is the trait the compiler looks for on any value used in that
-// context. For this exercise, that context is the potential errors which
-// can be returned in a `Result`.
-
 use std::error::Error;
 use std::fmt;
 
@@ -20,11 +7,10 @@ enum CreationError {
     Zero,
 }
 
-// This is required so that `CreationError` can implement `Error`.
-// 需要为这个错误枚举, 实现Display trait, 因为需要打印输出
+// 实现Display trait, 打印输出
 impl fmt::Display for CreationError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let description = match *self {
+        let description: &str = match *self {
             CreationError::Negative => "number is negative",
             CreationError::Zero => "number is zero",
         };
@@ -51,13 +37,12 @@ impl PositiveNonzeroInteger {
 // Box<dyn Error> 包含了 ParseIntError 和 CreationError!!
 // 返回通用的错误, 不一定需要指定具体的错误类型
 
-// 错误类型的顶层Trait: Box<dyn Error>
-// 兼容多种错误类型
+// 兼容多种错误类型: 错误类型的顶层 Trait: Box<dyn Error>
 fn main() -> Result<(), Box<dyn Error>> {
     let pretend_user_input: &str = "42";
-    let x: i64 = pretend_user_input.parse()?; // 自动抛出默认错误
-    
-    let result: PositiveNonzeroInteger = PositiveNonzeroInteger::new(x)?; // 抛出特定错误枚举!!
+    let x: i64 = pretend_user_input.parse()?; // 抛出ParseIntError
+
+    let result: PositiveNonzeroInteger = PositiveNonzeroInteger::new(x)?; // 抛出CreationError
     println!("output={:?}", result);
     Ok(())
 }

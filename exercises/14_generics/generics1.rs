@@ -1,20 +1,20 @@
-// `Vec<T>` is generic over the type `T`. In most cases, the compiler is able to
-// infer `T`, for example after pushing a value with a concrete type to the vector.
-// But in this exercise, the compiler needs some help through a type annotation.
-
 fn main() {
-    // `Vec<T>`. Choose `T` as some integer type that can be created from
-    // `u8` and `i8`.
-
-    // i32 能同时兼容 u8 和 i8
-    // 父级包含两个子集
+    // 容器只能放置相同类型的数据 i32
     let mut numbers: Vec<i32> = Vec::new();
 
-    // Don't change the lines below.
+    // 胖指针内存固定24
+    assert_eq!(std::mem::size_of::<Vec<i32>>(), 24);
+
     let n1: u8 = 42;
-    numbers.push(n1.into());
+    let n1_into: i32 = n1.into(); // core::convert From trait
+    numbers.push(n1_into);
+
     let n2: i8 = -1;
-    numbers.push(n2.into());
+    let n2_into: i32 = n2.into();
+    numbers.push(n2_into);
 
     println!("{numbers:?}");
+
+    assert_eq!(numbers.len(), 2);
+    assert_eq!(std::mem::size_of::<Vec<i32>>(), 24);
 }
