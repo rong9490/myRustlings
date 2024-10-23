@@ -1,19 +1,20 @@
-// The trait `AppendBar` has only one function which appends "Bar" to any object
-// implementing this trait.
+// 声明一个trait, 里面有一个函数签名(没有默认实现) fn append_bar(self) -> Self;
 trait AppendBar {
     fn append_bar(self) -> Self;
 }
 
+// 为String类型实现AppendBar trait
+// 这样所有String类型的字符串都可以调用该方法
 impl AppendBar for String {
-    fn append_bar(self) -> String {
-        let temp: String = self + "Bar"; // 也可以用format, String是有用所有权的动态字符串, 所以可以执行拼接
+    fn append_bar(self: String) -> String {
+        let temp: String = self + "Bar"; // 也可以用format, String有所有权的动态字符串, 可以执行拼接
         temp
     }
 }
 
 fn main() {
-    let s = String::from("Foo");
-    let s = s.append_bar();
+    let s: String = String::from("Foo");
+    let s: String = s.append_bar();
     println!("s: {s}");
 }
 
@@ -28,6 +29,13 @@ mod tests {
 
     #[test]
     fn is_bar_bar() {
-        assert_eq!(String::from("").append_bar().append_bar(), "BarBar");
+        assert_eq!(
+            String::from("")
+                .append_bar()
+                .append_bar()
+                .append_bar()
+                .append_bar(),
+            "BarBarBarBar"
+        );
     }
 }
